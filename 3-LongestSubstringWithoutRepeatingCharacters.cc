@@ -1,3 +1,18 @@
+/*
+Given a string, find the length of the longest substring without repeating characters.
+
+Examples:
+
+Given "abcabcbb", the answer is "abc", which the length is 3.
+
+Given "bbbbb", the answer is "b", with the length of 1.
+
+Given "pwwkew", the answer is "wke", with the length of 3. Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+
+Subscribe to see which companies asked this question.
+*/
+
+
 //看到最长字串，则想到可以以一个表来表示是否出现重复字符，表中保存下标则刚好可以满足此题的需要
 //此题应用了动态规划法
 //max_len=max(max_len,i-start),即max字串有两种可能，一是包含当前最后一个字符，
