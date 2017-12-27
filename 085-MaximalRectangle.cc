@@ -1,26 +1,29 @@
-#include<iostream>
-#include<algorithm>
-#include<vector>
-#include<stack>
-#include<set>
-#include<unordered_set>
-using namespace std;
+/*
+ Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
+
+For example, given the following matrix:
+
+1 0 1 0 0
+1 0 1 1 1
+1 1 1 1 1
+1 0 0 1 0
+
+Return 6. 
+*/
 
 
 class Solution {
 public:
     int maximalRectangle(vector<vector<char>>& matrix) {
-        if(matrix.empty())
+        if(matrix.empty()|| matrix[0].empty())
             return 0;
         int rows=matrix.size(),cols=matrix[0].size(),ret=0;
         vector<int> h(cols+1);
         for(int i=0;i<rows;i++) {
             stack<int> lowi;
-            matrix[i].push_back('0');
             for(int j=0;j<=cols;j++) {
-                h[j]=((matrix[i][j]=='1')?h[j]+1:0);
-		h[cols]=-2;
-                if(!lowi.empty() && h[j]<h[lowi.top()]){
+                h[j]=((j!=cols && matrix[i][j]=='1')?h[j]+1:0);
+                while(!lowi.empty() && (h[j]<h[lowi.top()])){
                     int height=h[lowi.top()];
                     lowi.pop();
                     int lefti=(lowi.empty()?-1:lowi.top());
@@ -32,12 +35,3 @@ public:
         return ret;     
     }
 };
-
-int main() {
-	Solution s1;
-	vector<vector<char>> vc{{'1','0','1','0','0'},{'1','0','1','1','1'},
-							{'1','1','1','1','1'},{'1','0','0','1','0'}};
-	auto res=s1.maximalRectangle(vc);
-	cout<<res<<endl;
-	return 0;
-}

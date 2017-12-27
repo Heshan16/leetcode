@@ -7,28 +7,30 @@ Given 1->1->1->2->3, return 2->3.
 
 */
 
-
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
 class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
-        ListNode h(0),*p=&h;
-        while(head) {
-            if(!head->next || head->next->val!=head->val) {
-                p->next=head;
-                p=p->next;
-                head=head->next;
-            }
+        ListNode **cur=&head;
+        while(*cur){
+            if(!(*cur)->next || (*cur)->val!=(*cur)->next->val)
+                cur=&((*cur)->next);
             else {
-                int val=head->val;
-                while(head && head->val==val){
-                    ListNode *temp=head;
-                    head=head->next;
-                  delete temp;
+                int val=(*cur)->val;
+                while(*cur && ((*cur)->val==val)){
+                    ListNode *temp=*cur;
+                    *cur=(*cur)->next;
+                    delete temp;
                 }
-                //p->next=head;
-                //p=p->next;
             }
         }
-        return h.next;
+        return head;
     }
 };
