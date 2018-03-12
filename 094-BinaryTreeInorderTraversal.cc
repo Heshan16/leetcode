@@ -2,32 +2,12 @@
 
 
 Given a binary tree, return the inorder traversal of its nodes' values.
-
-For example:
-Given binary tree [1,null,2,3],
-
-   1
-    \
-     2
-    /
-   3
-
-return [1,3,2]. 
 */
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
+//Solution 1,using recursion
 class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
-//中序遍历二叉树问题
         vector<int> res;
         recur_visit(res,root);
         return res;
@@ -38,5 +18,58 @@ public:
         recur_visit(vi,root->left);
         vi.push_back(root->val);
         recur_visit(vi,root->right);
+    }
+};
+
+//Solution 2,using a stack to iteration
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        stack<TreeNode *> nodes;
+        TreeNode *cur=root;
+        while(!nodes.empty() || cur) {
+            if(cur) {
+                nodes.push(cur);
+                cur=cur->left;
+            }
+            else {
+                TreeNode *p=nodes.top();
+                nodes.pop();
+                res.push_back(p->val);
+                cur=p->right;
+            }
+        }
+        return res;
+    }
+};
+
+//Solution 3,Morris traverser
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        TreeNode *cur=root;
+        vector<int> res;
+        while(cur) {
+            if(!cur->left) {
+                res.push_back(cur->val);
+                cur=cur->right;
+            }
+            else {
+                TreeNode *pre=cur->left;
+                while(pre->right && pre->right!=cur)
+                    pre=pre->right;
+                if(pre->right) {
+                    pre->right=NULL;
+                    res.push_back(cur->val);
+                    cur=cur->right;
+                }
+                else {
+                    pre->right=cur;
+                    cur=cur->left;
+                }
+            }
+        }
+        return res;
     }
 };
